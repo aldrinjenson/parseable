@@ -28,15 +28,15 @@ jobs:
           command: build
           args: --release --target ${{matrix.target}}
 
+      - name: Rename binary
+        run: |
+          mv target/${{ matrix.target }}/release/parseable Parseable_${{ matrix.target }}
+
       - name: Create Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Parseable_${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/parseable
-
-      - name: Rename binary
-        run: |
-          mv target/${{ matrix.target }}/release/parseable Parseable_${{ matrix.target }}
+          path: Parseable_${{ matrix.target }}
 
       - name: Publish Archive to Release Page
         uses: softprops/action-gh-release@v0.1.15
@@ -64,15 +64,15 @@ jobs:
       - name: Build
         run: cargo build --all --release --target x86_64-pc-windows-msvc
 
-      - name: Create artifact for Windows
-        uses: actions/upload-artifact@v2
-        with:
-          name: Parseable_x86_64-pc-windows-msvc
-          path: target/x86_64-pc-windows-msvc/release/PARSEABLE.exe
-
       - name: Rename binary
         run: |
           mv target/x86_64-pc-windows-msvc/release/PARSEABLE.exe Parseable_x86_64-pc-windows-msvc.exe
+
+      - name: Create artifact for Windows
+        uses: actions/upload-artifact@v2
+        with:
+          name: Parseable_x86_64-pc-windows-msvc.exe
+          path: Parseable_x86_64-pc-windows-msvc.exe
 
       - name: Publish Archive to Release Page
         uses: softprops/action-gh-release@v0.1.15
@@ -109,16 +109,15 @@ jobs:
           cargo build --release --target ${{ matrix.target }}
           strip target/${{ matrix.target }}/release/Parseable
 
+      - name: Rename binary
+        run: |
+          mv target/${{ matrix.target }}/release/Parseable Parseable_${{ matrix.target }}
+
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
           name: Parseable_${{ matrix.target }}
-          path: |
-            target/${{ matrix.target }}/release/Parseable
-
-      - name: Rename binary
-        run: |
-          mv target/${{ matrix.target }}/release/Parseable Parseable_${{ matrix.target }}
+          path: Parseable_${{ matrix.target }}
 
       - name: Publish Archive to Release Page
         uses: softprops/action-gh-release@v0.1.15
