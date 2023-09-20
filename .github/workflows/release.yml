@@ -140,7 +140,7 @@ jobs:
 
       - name: Run shasum command
         run: |
-          find . -type f -name "Parseable_*" -exec shasum {} \ | sed 's/.\/.*\///' > checksum.txt
+          find . -type f -name "Parseable_*" -exec shasum {} \; | sed 's/.\/.*\///' > checksum.txt
           cat checksum.txt
 
       - name: Create artifact
