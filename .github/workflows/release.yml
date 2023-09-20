@@ -143,7 +143,14 @@ jobs:
 
       - name: Run shasum command
         run: |
-          shasum Parseable* > checksum.txt; cat checksum.txt
+          find . -type f -name "Parseable_*" -exec shasum {} \; > checksum.txt
+          cat checksum.txt
+
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: checksum.txt
+          path: checksum.txt
 
       # - name: Publish Check Sum to Release Page
       #   uses: softprops/action-gh-release@v0.1.15
