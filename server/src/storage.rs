@@ -20,9 +20,10 @@ use crate::stats::Stats;
 
 use chrono::Local;
 
-use std::fmt::Debug;
+use std::{collections::HashMap, fmt::Debug};
 
 mod localfs;
+mod metrics_layer;
 mod object_storage;
 pub mod retention;
 mod s3;
@@ -36,6 +37,7 @@ pub use store_metadata::{
     put_remote_metadata, put_staging_metadata, resolve_parseable_metadata, StorageMetadata,
 };
 
+use self::retention::Retention;
 pub use self::staging::StorageDir;
 
 /// local sync interval to move data.records to /tmp dir of that stream.
@@ -71,6 +73,10 @@ pub struct ObjectStoreFormat {
     pub owner: Owner,
     pub permissions: Vec<Permisssion>,
     pub stats: Stats,
+    #[serde(default)]
+    pub retention: Retention,
+    #[serde(default)]
+    pub modules: HashMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -111,6 +117,8 @@ impl Default for ObjectStoreFormat {
             owner: Owner::new("".to_string(), "".to_string()),
             permissions: vec![Permisssion::new("parseable".to_string())],
             stats: Stats::default(),
+            retention: Retention::default(),
+            modules: HashMap::default(),
         }
     }
 }

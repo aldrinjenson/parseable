@@ -26,6 +26,7 @@ use once_cell::sync::OnceCell;
 use std::io;
 
 use crate::{
+    external_service::Registration,
     option::CONFIG,
     rbac::{role::model::DefaultPrivilege, user::User},
     storage::ObjectStorageError,
@@ -57,6 +58,10 @@ pub struct StorageMetadata {
     pub streams: Vec<String>,
     #[serde(default)]
     pub roles: HashMap<String, Vec<DefaultPrivilege>>,
+    #[serde(default)]
+    pub default_role: Option<String>,
+    #[serde(default)]
+    pub modules: HashMap<String, Registration>,
 }
 
 impl StorageMetadata {
@@ -70,6 +75,8 @@ impl StorageMetadata {
             users: Vec::new(),
             streams: Vec::new(),
             roles: HashMap::default(),
+            default_role: None,
+            modules: HashMap::default(),
         }
     }
 

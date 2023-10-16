@@ -35,6 +35,7 @@ mod alerts;
 mod analytics;
 mod banner;
 mod event;
+mod external_service;
 mod handlers;
 mod metadata;
 mod metrics;
@@ -65,7 +66,8 @@ async fn main() -> anyhow::Result<()> {
     migration::run_metadata_migration(&CONFIG).await?;
     let metadata = storage::resolve_parseable_metadata().await?;
     banner::print(&CONFIG, &metadata).await;
-    rbac::map::init(metadata.users.clone(), metadata.roles.clone());
+    rbac::map::init(&metadata);
+    external_service::init(&metadata);
     metadata.set_global();
     let prometheus = metrics::build_metrics_handler();
     CONFIG.storage().register_store_metrics(&prometheus);
