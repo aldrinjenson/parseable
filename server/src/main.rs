@@ -52,10 +52,11 @@ mod validator;
 
 use option::CONFIG;
 
-#[cfg(feature = "debug")]
-const DEBUG_PYROSCOPE_URL: &str = "P_PROFILE_PYROSCOPE_URL";
-#[cfg(feature = "debug")]
-const DEBUG_PYROSCOPE_TOKEN: &str = "P_PROFILE_PYROSCOPE_AUTH_TOKEN";
+// temp
+// #[cfg(feature = "debug")]
+// const DEBUG_PYROSCOPE_URL: &str = "P_PROFILE_PYROSCOPE_URL";
+// #[cfg(feature = "debug")]
+// const DEBUG_PYROSCOPE_TOKEN: &str = "P_PROFILE_PYROSCOPE_AUTH_TOKEN";
 
 #[actix_web::main]
 async fn main() -> anyhow::Result<()> {
