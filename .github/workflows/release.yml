@@ -2,13 +2,6 @@ name: Release builds for Mac(64bit, Arm), Windows and Linux(64 bit, Arm)
 
 on:
   push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+*
-    paths-ignore:
-      - "docs/**"
-      - "helm/**"
-      - "assets/**"
-      - "**.md"
 
 jobs:
   build-linux:
@@ -142,16 +135,12 @@ jobs:
       - name: Download artifacts created
         uses: actions/download-artifact@v3
 
-      - name: Run shasum command
-        run: |
-          find . -type f -name "Parseable_*" -exec shasum {} \; | sed 's/.\/.*\///' > checksum.txt
-
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
           name: checksum.txt
           path: checksum.txt
-
+          
       - name: Publish Check Sum to Release Page
         uses: softprops/action-gh-release@v0.1.15
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -160,3 +149,4 @@ jobs:
           files: checksum.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
